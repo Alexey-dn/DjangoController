@@ -1,4 +1,6 @@
-from django.views.generic import ListView
+# Импортируем класс, который говорит нам о том,
+# что в этом представлении мы будем выводить список объектов из БД
+from django.views.generic import ListView, DetailView
 from .models import Product
 
 
@@ -9,7 +11,20 @@ class ProductsList(ListView):
     ordering = 'name'
     # Указываем имя шаблона, в котором будут все инструкции о том,
     # как именно пользователю должны быть показаны наши объекты
+    # queryset = Product.objects.filter(price_lt=300).order_by('name')
+    # Если хотим, чтобы сортировка шла по товарам ценой меньше
+    # 300, то вместо параметра ordering and name указываем этот
     template_name = 'products.html'
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'products'
+    # 'products' должно строго соответствовать {{ products }} в products.html
+
+
+class ProductDetail(DetailView):
+    # Модель всё та же, но мы хотим получать информацию по отдельному товару
+    model = Product
+    # Используем другой шаблон — product.html
+    template_name = 'product.html'
+    # Название объекта, в котором будет выбранный пользователем продукт
+    context_object_name = 'product'
