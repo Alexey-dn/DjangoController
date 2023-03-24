@@ -1,7 +1,8 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 
-{% load custom_filters %}
+{% load custom_filters %} <!-- Подключаем фильтр из custom_filters -->
+{% load custom_tags %} <!-- Подключаем таг из custom_tags -->
 
 <!-- Название у нас будет products -->
 {% block title %}
@@ -15,10 +16,14 @@ Products
     и применяем к ней фильтр date. По назначению этот фильтр очень похож
     на метод strftime у объекта datetime в Python — вывод времени
     в указанном формате. -->
-    <h3>{{ time_now|date:'M d Y' }}</h3>
+<!--    <h3>{{ time_now|date:'M d Y' }}</h3>-->
+<!--    так было-->
+    <h3>{% current_time '%b %d %Y' %}</h3>
+<!--так стало с новым тэгом, которы мы подключили выше-->
+
+    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о распродаже!" }} </h3>
     <!-- Если в переменной next_sale будет None,
     то выведется указанный в фильтре текст -->
-    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о распродаже!" }} </h3>
     <hr>
     {% if products %}
         <table> <!-- Начинаем описывать таблицу -->
