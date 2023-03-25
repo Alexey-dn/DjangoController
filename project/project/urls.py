@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from simpleapp.views import multiply
 
 
 """project URL Configuration
@@ -24,5 +25,6 @@ urlpatterns = [
     path('pages/', include('django.contrib.flatpages.urls')),
    # Делаем так, чтобы все адреса из нашего приложения (simpleapp/urls.py)
    # подключались к главному приложению с префиксом products/.
+    path('multiply/', multiply),
     path('products/', include('simpleapp.urls')),
 ]

@@ -8,6 +8,8 @@ from datetime import datetime
 from django.views.generic import ListView, DetailView
 from .models import Product
 
+from django.http import HttpResponse
+
 
 class ProductsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -24,6 +26,7 @@ class ProductsList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'products'
     # 'products' должно строго соответствовать {{ products }} в products.html
+    paginate_by = 2  # вот так мы можем указать количество записей на странице
 
     # Метод get_context_data позволяет нам изменить набор данных,
     # который будет передан в шаблон.
@@ -48,3 +51,15 @@ class ProductDetail(DetailView):
     template_name = 'product.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'product'
+
+def multiply(request):
+    number = request.GET.get('number')
+    multiplier = request.GET.get('multiplier')
+
+    try:
+        result = int(number) * int(multiplier)
+        html = f"<html><body>{number}*{multiplier}={result}</body></html>"
+    except (ValueError, TypeError):
+        html = f"<html><body>Invalid input.</body></html>"
+
+    return HttpResponse(html)
