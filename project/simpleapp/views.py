@@ -5,12 +5,14 @@
 # что в этом представлении мы будем выводить список объектов из БД
 from datetime import datetime
 
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+from django.http import HttpResponseRedirect
+
 from .models import Product
-
-from django.http import HttpResponse
-
 from .filters import ProductFilter
+from .forms import ProductForm
+
 
 class ProductsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -68,14 +70,25 @@ class ProductDetail(DetailView):
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'product'
 
-def multiply(request):
-    number = request.GET.get('number')
-    multiplier = request.GET.get('multiplier')
 
-    try:
-        result = int(number) * int(multiplier)
-        html = f"<html><body>{number}*{multiplier}={result}</body></html>"
-    except (ValueError, TypeError):
-        html = f"<html><body>Invalid input.</body></html>"
+def create_product(request):
+    form = ProductForm()
 
-    return HttpResponse(html)
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/products/')
+    return render(request, 'product_edit.html', {'form': form})
+
+# def multiply(request):
+#     number = request.GET.get('number')
+#     multiplier = request.GET.get('multiplier')
+#
+#     try:
+#         result = int(number) * int(multiplier)
+#         html = f"<html><body>{number}*{multiplier}={result}</body></html>"
+#     except (ValueError, TypeError):
+#         html = f"<html><body>Invalid input.</body></html>"
+#
+#     return HttpResponse(html)
