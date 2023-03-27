@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.urls import reverse
 
 
 # Товар для нашей витрины
@@ -27,7 +28,10 @@ class Product(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name}: {self.description[:20]}'
+        return f'{self.name.title()}: {self.description[:20]}'  #title() метод делающий первую букву заглавной
+
+    def get_absolute_url(self):
+        return reverse('product_detail', args=[str(self.id)])
 
     class Meta:  #  Возвращает название категории во множественном или единственном числе в админпанеле
         verbose_name = 'Товар'
@@ -40,7 +44,7 @@ class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Категория')
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name.title()}'
 
     class Meta:  #  Возвращает название категории во множественном или единственном числе в админпанеле
         verbose_name = 'Категория'
