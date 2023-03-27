@@ -8,7 +8,7 @@ from datetime import datetime
 from django.urls import reverse_lazy
 # from django.shortcuts import render
 from django.views.generic import (
-    ListView, DetailView, CreateView
+    ListView, DetailView, CreateView, UpdateView
 )
 # from django.http import HttpResponseRedirect
 
@@ -32,7 +32,7 @@ class ProductsList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'products'
     # 'products' должно строго соответствовать {{ products }} в products.html
-    paginate_by = 2  # вот так мы можем указать количество записей на странице
+    paginate_by = 3  # вот так мы можем указать количество записей на странице
 
     # Переопределяем функцию получения списка товаров
     def get_queryset(self):
@@ -104,3 +104,10 @@ class ProductCreate(CreateView):
 #         html = f"<html><body>Invalid input.</body></html>"
 #
 #     return HttpResponse(html)
+
+
+# Добавляем представление для изменения товара.
+class ProductUpdate(UpdateView):
+    form_class = ProductForm
+    model = Product
+    template_name = 'product_edit.html'
