@@ -5,12 +5,12 @@
 # что в этом представлении мы будем выводить список объектов из БД
 from datetime import datetime
 # from django.shortcuts import render
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
-# from django.http import HttpResponseRedirect
+
 
 from .models import Product
 from .filters import ProductFilter
@@ -75,7 +75,8 @@ class ProductDetail(DetailView):
 
 
 # Добавляем новое представление для создания товаров.
-class ProductCreate(CreateView):
+class ProductCreate(LoginRequiredMixin, CreateView):
+    raise_exception = True  # Ошибка возникает при не авторизованном доступе на страницу LoginRequiredMixin
     # Указываем нашу разработанную форму
     form_class = ProductForm
     # модель товаров
