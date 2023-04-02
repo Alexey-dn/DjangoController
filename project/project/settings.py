@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'simpleapp',
     'django_filters',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -75,11 +74,9 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # `allauth` обязательно нужен этот процессор
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
-                'django.template.context_processors.request',  # `allauth` обязательно нужен этот процессор
             ],
         },
     },
@@ -143,9 +140,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 LOGIN_REDIRECT_URL = "/products"
+LOGOUT_REDIRECT_URL = "/accounts/login"
 
 # Этого раздела может не быть, добавьте его в указанном виде.
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+# Регистрация по почте, без подтверждения почты
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
