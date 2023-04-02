@@ -31,17 +31,25 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+# В данный раздел добавьте 3 обязательных приложения allauth
+# и одно, которое отвечает за выход через Yandex
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # 1 - пользователей
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages',  # 2 - сообщения
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    'django.contrib.sites',  # 3 - настройки сайта
     'django.contrib.flatpages',
     'simpleapp',
     'django_filters',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.yandex',
+
 ]
 
 SITE_ID = 1
@@ -70,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'django.template.context_processors.request',  # `allauth` обязательно нужен этот процессор
             ],
         },
     },
@@ -133,3 +143,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 LOGIN_REDIRECT_URL = "/products"
+
+# Этого раздела может не быть, добавьте его в указанном виде.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
