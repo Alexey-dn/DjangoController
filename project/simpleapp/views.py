@@ -84,6 +84,28 @@ class ProductCreate(LoginRequiredMixin, CreateView):
     # и новый шаблон, в котором используется форма.
     template_name = 'product_edit.html'
 
+
+class ProductSearch(ListView):
+    model = Product
+    template_name = 'product_search.html'
+    context_object_name = 'search'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = ProductFilter(self.request.GET, queryset)
+
+        if not self.request.GET:
+            return queryset.none()
+
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #     # К словарю добавим текущую дату в ключ 'time_now'.
+        #     context['time_now'] = datetime.utcnow()
+        context['filterset'] = self.filterset
+        return context
+
 # def create_product(request):
 #     form = ProductForm()
 #
