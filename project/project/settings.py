@@ -163,8 +163,9 @@ EMAIL_HOST_USER = "omneziya@yandex.ru"
 EMAIL_HOST_PASSWORD = "apwkwachtgcneyoo"  # rfuemvfwxcbzilqm
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+EMAIL_SUBJECT_PREFIX = ""  # "Hi, dude" - префикс добавляется при рассылке писем менеджерам
 
-DEFAULT_FROM_EMAIL = "Cool.shop"  # "omneziya@yandex.ru"
+DEFAULT_FROM_EMAIL = "omneziya@yandex.ru"
 
 SERVER_EMAIL = "omneziya@yandex.ru"
 MANAGERS = (
