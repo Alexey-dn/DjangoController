@@ -164,4 +164,10 @@ EMAIL_HOST_PASSWORD = "apwkwachtgcneyoo"  # rfuemvfwxcbzilqm
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "omneziya@yandex.ru"
+DEFAULT_FROM_EMAIL = "Cool.shop"  # "omneziya@yandex.ru"
+
+SERVER_EMAIL = "omneziya@yandex.ru"
+MANAGERS = (
+    ('Alexandra', 'ailuhina1981@yandex.ru'),
+    ('Ivan', 'omneziya@yandex.ru'),
+)
