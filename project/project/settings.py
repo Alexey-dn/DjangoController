@@ -172,3 +172,7 @@ MANAGERS = (
     ('Alexandra', 'ailuhina1981@yandex.ru'),
     ('Ivan', 'omneziya@yandex.ru'),
 )
+
+ADMINS = (
+    ('Anton', 'ilyukhin1981@internet.ru'),
+)
