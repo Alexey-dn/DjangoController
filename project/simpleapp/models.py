@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 # Товар для нашей витрины
@@ -33,7 +34,7 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', args=[str(self.id)])
 
-    class Meta:  #  Возвращает название категории во множественном или единственном числе в админпанеле
+    class Meta:  # Возвращает название категории во множественном или единственном числе в админпанеле
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
@@ -46,6 +47,23 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name.title()}'
 
-    class Meta:  #  Возвращает название категории во множественном или единственном числе в админпанеле
+    class Meta:  # Возвращает название категории во множественном или единственном числе в админпанеле
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
