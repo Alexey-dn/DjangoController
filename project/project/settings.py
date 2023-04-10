@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    # 'django_apscheduler',
 
 ]
 
@@ -157,6 +158,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'  # 'mandatory'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}  # форма дополнительной обработки регистрации пользователя
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # активирует аккаунт сразу после перехода по ссылке
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAY = 1  # количество дней, когда доступна ссылка на подтверждение регистрации
+ACCOUNT_USER_DISPLAY = lambda user: f'{user.first_name}'
 # Настройки почты
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 'django.core.mail.backends.smtp.EmailBackend'
 #  console - отправка писем в консоль Питона, smtp - отправка писем через почтовые сервисы
