@@ -158,7 +158,8 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}  # форма до
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # активирует аккаунт сразу после перехода по ссылке
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAY = 1  # количество дней, когда доступна ссылка на подтверждение регистрации
 # Настройки почты
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 'django.core.mail.backends.smtp.EmailBackend'
+#  console - отправка писем в консоль Питона, smtp - отправка писем через почтовые сервисы
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "omneziya@yandex.ru"
