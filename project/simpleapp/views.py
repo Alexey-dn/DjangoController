@@ -23,6 +23,10 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from .models import Subscription, Category
 
+from django.http import HttpResponse
+from django.views import View
+from .tasks import hello
+
 
 class ProductsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -180,3 +184,9 @@ def subscriptions(request):
         'subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
+
+
+class IndexView(View):
+    def get(self, request):
+        hello.delay()
+        return HttpResponse('Hello!')
