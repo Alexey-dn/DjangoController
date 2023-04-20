@@ -42,10 +42,16 @@ Products
 <!--       <input type="submit" value="Найти" />-->
 <!--    </form> &lt;!&ndash; был поиск таков&ndash;&gt;-->
 
-    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о распродаже!" }} </h3>
+<!--    <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о распродаже!" }} </h3>-->
     <!-- Если в переменной next_sale будет None,
     то выведется указанный в фильтре текст -->
     <hr>
+    <a href="{% url 'subscriptions' %}">Подписаться</a>
+    {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
+    {% if perms.simpleapp.add_product %}
+    <a href="{% url 'product_create' %}">Добавить товар</a>
+    {% endif %}
+
     {% if products %}
         <table> <!-- Начинаем описывать таблицу -->
             <tr> <!-- Добавляем строку -->
@@ -54,6 +60,11 @@ Products
                 <td>Категория</td>
                 <td>Цена</td>
                 <td>Количество</td>
+
+                {# Условие получается составным. #}
+                {% if perms.simpleapp.change_product or perms.simpleapp.delete_product %}
+                <td>Действия</td>
+                {% endif %}
             </tr> <!-- Не забываем закрыть HTML-тег строки -->
                 <!-- Для каждого товара будете генерироваться новая строчка,
                 т.е. новый HTML код, который указан в теле цикла.
@@ -72,8 +83,16 @@ Products
                 Все остальные символы превратятся в многоточие. -->
                 <td>{{ product.category.name }}</td>
                 <!-- Используем наш фильтр -->
-               <td>{{ product.price|currency:"usd" }}</td>
-               <td>{{ product.quantity }}</td>
+                <td>{{ product.price|currency:"usd" }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>
+                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+                    {% if perms.simpleapp.change_product %}
+                    <a href="{% url 'product_update' pk=product.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.simpleapp.delete_product %}
+                    <a href="{% url 'product_delete' product.id %}">Удалить</a>
+                    {% endif %}
             </tr>
             {% endfor %}
 

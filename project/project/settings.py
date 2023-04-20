@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'django_apscheduler',
 
 ]
 
@@ -153,4 +157,37 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'  # 'mandatory'
+ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}  # форма дополнительной обработки регистрации пользователя
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True  # активирует аккаунт сразу после перехода по ссылке
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAY = 1  # количество дней, когда доступна ссылка на подтверждение регистрации
+ACCOUNT_USER_DISPLAY = lambda user: f'{user.first_name}'
+# Настройки почты
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 'django.core.mail.backends.smtp.EmailBackend'
+#  console - отправка писем в консоль Питона, smtp - отправка писем через почтовые сервисы
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_SUBJECT_PREFIX = ''  # "Hi, dude" - префикс добавляется при рассылке писем менеджерам
+
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL')
+MANAGERS = (
+    ('Alexandra', 'ailuhina1981@yandex.ru'),
+    ('Ivan', 'omneziya@yandex.ru'),
+)
+
+ADMINS = (
+    ('Anton', 'ilyukhin1981@internet.ru'),
+)
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Moscow'
