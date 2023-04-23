@@ -3,7 +3,7 @@
 
 {% load custom_filters %} <!-- Подключаем фильтр из custom_filters -->
 {% load custom_tags %} <!-- Подключаем таг из custom_tags -->
-
+{% load cache %} <!--Кэширование -->
 <!-- Название у нас будет products -->
 {% block title %}
 Products
@@ -11,6 +11,7 @@ Products
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
+    {% cache 30 header %}
     <h1>Все товары</h1>
     <!-- Используем переданную из представления переменную time_now
     и применяем к ней фильтр date. По назначению этот фильтр очень похож
@@ -46,6 +47,7 @@ Products
     <!-- Если в переменной next_sale будет None,
     то выведется указанный в фильтре текст -->
     <hr>
+    {% endcache %}
     <a href="{% url 'subscriptions' %}">Подписаться</a>
     {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
     {% if perms.simpleapp.add_product %}
