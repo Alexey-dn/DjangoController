@@ -1,11 +1,3 @@
-# ListView — запрашивает данные из базы по указанной модели,
-# находит указанный шаблон, передаёт объекты в шаблон
-
-# Импортируем класс, который говорит нам о том,
-# что в этом представлении мы будем выводить список объектов из БД
-from datetime import datetime
-# from django.shortcuts import render
-# from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -27,6 +19,8 @@ from django.http import HttpResponse
 from django.views import View
 from .tasks import hello, printer
 from datetime import datetime, timedelta
+
+from django.core.cache import cache  # импортируем наш кэш
 
 
 class ProductsList(ListView):
@@ -84,6 +78,18 @@ class ProductDetail(DetailView):
     template_name = 'product.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'product'
+    queryset = Product.objects.all()
+
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'product-{self.kwargs["pk"]}', None)
+        # кэш очень похож на словарь, и метод get действует так же. Он забирает значение по ключу, если его нет, то забирает None.
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'product-{self.kwargs["pk"]}', obj)
+
+        return obj
 
 
 # Добавляем новое представление для создания товаров.
