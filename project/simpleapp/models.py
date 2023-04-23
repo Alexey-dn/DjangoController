@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+from django.core.cache import cache
 
 # Товар для нашей витрины
 class Product(models.Model):
@@ -32,7 +33,11 @@ class Product(models.Model):
         return f'{self.name.title()}: {self.description[:20]}'  #title() метод делающий первую букву заглавной
 
     def get_absolute_url(self):
-        return reverse('product_detail', args=[str(self.id)])
+        return reverse('product_detail', args=[str(self.id)])  # f'/products/{self.id}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # сначала вызываем метод родителя, чтобы объект сохранился
+        cache.delete(f'product-{self.pk}')  # затем удаляем его из кэша, чтобы сбросить его
 
     class Meta:  # Возвращает название категории во множественном или единственном числе в админпанеле
         verbose_name = 'Товар'
