@@ -1,11 +1,10 @@
-from django.db import models
-from django.core.validators import MinValueValidator
-from django.urls import reverse
 from django.contrib.auth.models import User
-
 from django.core.cache import cache
+from django.core.validators import MinValueValidator
+from django.db import models
+from django.urls import reverse
 
-# Товар для нашей витрины
+
 class Product(models.Model):
     name = models.CharField(
         max_length=50,
@@ -30,7 +29,7 @@ class Product(models.Model):
     )
 
     def __str__(self):
-        return f'{self.name.title()}: {self.description[:20]}'  #title() метод делающий первую букву заглавной
+        return f'{self.name.title()}: {self.description[:20]}'  # title() метод делающий первую букву заглавной
 
     def get_absolute_url(self):
         return reverse('product_detail', args=[str(self.id)])  # f'/products/{self.id}'
