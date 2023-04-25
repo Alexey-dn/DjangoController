@@ -1,26 +1,23 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import (
-    ListView, DetailView, CreateView, UpdateView, DeleteView
-)
-
-
-from .models import Product
-from .filters import ProductFilter
-from .forms import ProductForm
-
-from django.contrib.auth.decorators import login_required
-from django.db.models import Exists, OuterRef
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_protect
-from .models import Subscription, Category
-
-from django.http import HttpResponse
-from django.views import View
-from .tasks import hello, printer
 from datetime import datetime, timedelta
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache  # импортируем наш кэш
+from django.db.models import Exists, OuterRef
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic import (
+    CreateView, DeleteView, DetailView, ListView, UpdateView
+)
+
+from .filters import ProductFilter
+from .forms import ProductForm
+from .models import Category, Subscription
+from .models import Product
+from .tasks import hello, printer
 
 
 class ProductsList(ListView):

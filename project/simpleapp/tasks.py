@@ -1,8 +1,9 @@
-from celery import shared_task
 import time
 
-from .views import Product
+from celery import shared_task
 from django.core.mail import mail_managers
+
+from .views import Product
 
 
 @shared_task
@@ -16,6 +17,7 @@ def printer(N):
     for i in range(N):
         time.sleep(1)
         print(i + 1)
+
 
 @shared_task
 def goods_notification():
