@@ -13,10 +13,11 @@ class Command(BaseCommand):
             'Do you really want to delete all products? yes/no')  # спрашиваем пользователя действительно ли он хочет удалить все товары
         answer = input()  # считываем подтверждение
 
-        if answer == 'yes':  # в случае подтверждения действительно удаляем все товары
-            Product.objects.all().delete()
-            self.stdout.write(self.style.SUCCESS('Succesfully wiped products!'))
-            return
-
-        self.stdout.write(
-            self.style.ERROR('Access denied'))  # в случае неправильного подтверждения, говорим что в доступе отказано
+        if answer != 'yes':  # в случае подтверждения действительно удаляем все товары
+            self.stdout.write(self.style.ERROR(
+                'Access denied'))  # в случае неправильного подтверждения, говорим что в доступе отказано
+        else:
+            for product in Product.objects.all():
+                product.quantity = 0
+                product.save()
+            self.stdout.write(self.style.SUCCESS('Successfully wiped products!'))
