@@ -13,7 +13,7 @@ class Product(models.Model):
     )
     description = models.TextField(verbose_name='Описание')
     quantity = models.IntegerField(
-        validators=[MinValueValidator(0)],
+        validators=[MinValueValidator(0, 'Quantity should be >= 0')],
         verbose_name='Количество',
     )
     # поле категории будет ссылаться на модель категории
@@ -24,14 +24,19 @@ class Product(models.Model):
         verbose_name='Категория'
     )
     price = models.FloatField(
-        validators=[MinValueValidator(0.0)],
+        validators=[MinValueValidator(0.0, 'Price should be >= 0.0')],
         verbose_name='Цена',
     )
 
-    def __str__(self):
-        return f'{self.name.title()}: {self.description[:20]}'  # title() метод делающий первую букву заглавной
+    # допишем свойство, которое будет отображать есть ли товар на складе
+    @property
+    def on_stock(self):
+        return self.quantity > 0
 
-    def get_absolute_url(self):
+    def __str__(self):
+        return f'{self.name.title()}: {self.description[:20]}: {self.quantity}'  # title() метод делающий первую букву заглавной
+
+    def get_absolute_url(self):  # добавим абсолютный путь чтобы после создания нас перебрасывало на страницу с товаром
         return reverse('product_detail', args=[str(self.id)])  # f'/products/{self.id}'
 
     def save(self, *args, **kwargs):
