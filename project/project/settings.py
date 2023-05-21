@@ -19,7 +19,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -30,7 +29,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -88,7 +86,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -98,7 +95,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -118,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -129,7 +124,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -181,9 +175,9 @@ MANAGERS = (
     ('Ivan', 'omneziya@yandex.ru'),
 )
 
-ADMINS = (
+ADMINS = [
     ('Anton', 'ilyukhin1981@internet.ru'),
-)
+]
 
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
@@ -196,6 +190,93 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),  # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+        # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'warnings', 'errorCritical', 'infoLog'],
+        },
+        'django.request': {
+            'handlers': ['errorsLog', 'mail_admins'],
+        },
+        'django.template': {
+            'handlers': ['errorsLog'],
+        },
+        'django.server': {
+            'handlers': ['errorsLog', 'mail_admins'],
+        },
+        'django.db.backends': {
+            'handlers': ['errorsLog']
+        },
+        'django.security': {
+            'handlers': ['securityLog']
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'custom',
+        },
+        'warnings': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning',
+        },
+        'errorCritical': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'errorCritical',
+        },
+        'infoLog': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'infoLog',
+        },
+        'errorsLog': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'errorCritical',
+        },
+        'securityLog': {
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'infoLog',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'warning',
+        }
+    },
+    'formatters': {
+        'custom': {
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%d.%m.%Y - %H:%M:%S',
+            'style': '{',
+        },
+        'warning': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'datetime': '%d.%m.%Y - %H:%M:%S',
+            'style': '{',
+        },
+        'errorCritical': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'datetime': '%d.%m.%Y - %H:%M:%S',
+            'style': '{',
+        },
+        'infoLog': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%d.%m.%Y - %H:%M:%S',
+            'style': '{',
+        }
     }
 }
