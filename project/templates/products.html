@@ -94,6 +94,7 @@ Products
                         {% if perms.simpleapp.delete_product %}
                         <a href="{% url 'product_delete' product.id %}">Удалить</a>
                         {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
 
@@ -129,3 +130,4 @@ Products
         {% endif %}
     {% endif %}
 {% endblock content %}
+</html>
