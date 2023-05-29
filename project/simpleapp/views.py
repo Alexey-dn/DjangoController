@@ -192,6 +192,11 @@ def subscriptions(request):
 
 class IndexView(View):
     def get(self, request):
-        printer.apply_async([10], eta=datetime.now() + timedelta(seconds=5))
-        hello.delay()
-        return HttpResponse('Hello!')
+        # . Translators: This message appears on the home page only
+        models = Product.objects.all()
+
+        context = {
+            'models': models,
+        }
+
+        return HttpResponse(render(request, 'default.html', context))
