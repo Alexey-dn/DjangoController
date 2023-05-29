@@ -20,6 +20,7 @@ Including another URLconf
 
 
 urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),  # подключаем встроенные эндопинты для работы с локализацией
     path('admin/', admin.site.urls),
     # path('accounts/', include('django.contrib.auth.urls')),
     path("accounts/", include("allauth.urls")),  # Важен порядок с предыдущим путем
