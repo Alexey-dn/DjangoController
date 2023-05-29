@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # В данный раздел добавьте 3 обязательных приложения allauth
 # и одно, которое отвечает за выход через Yandex
 INSTALLED_APPS = [
+    'modeltranslation',  # обязательно впишите его перед админом
     'django.contrib.admin',
     'django.contrib.auth',  # 1 - пользователей
     'django.contrib.contenttypes',
@@ -50,7 +51,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
     'django_apscheduler',
-
 ]
 
 SITE_ID = 1
@@ -58,6 +58,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',  # logging
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -67,6 +68,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project.urls'
+
+LOCALE_PATHS = [  # logging
+    os.path.join(BASE_DIR, 'locale')
+]
 
 TEMPLATES = [
     {
@@ -118,6 +123,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('en-us', 'English'),
+    ('ru', 'Русский')
+]
 
 TIME_ZONE = 'UTC'
 
@@ -195,88 +205,88 @@ CACHES = {
     }
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'warnings', 'errorCritical', 'infoLog'],
-        },
-        'django.request': {
-            'handlers': ['errorsLog', 'mail_admins'],
-        },
-        'django.template': {
-            'handlers': ['errorsLog'],
-        },
-        'django.server': {
-            'handlers': ['errorsLog', 'mail_admins'],
-        },
-        'django.db.backends': {
-            'handlers': ['errorsLog']
-        },
-        'django.security': {
-            'handlers': ['securityLog']
-        }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'custom',
-        },
-        'warnings': {
-            'level': 'WARNING',
-            'class': 'logging.StreamHandler',
-            'formatter': 'warning',
-        },
-        'errorCritical': {
-            'level': 'ERROR',
-            'class': 'logging.StreamHandler',
-            'formatter': 'errorCritical',
-        },
-        'infoLog': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'general.log',
-            'formatter': 'infoLog',
-        },
-        'errorsLog': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'errors.log',
-            'formatter': 'errorCritical',
-        },
-        'securityLog': {
-            'class': 'logging.FileHandler',
-            'filename': 'security.log',
-            'formatter': 'infoLog',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'formatter': 'warning',
-        }
-    },
-    'formatters': {
-        'custom': {
-            'format': '{asctime} {levelname} {message}',
-            'datetime': '%d.%m.%Y - %H:%M:%S',
-            'style': '{',
-        },
-        'warning': {
-            'format': '{asctime} {levelname} {message} {pathname}',
-            'datetime': '%d.%m.%Y - %H:%M:%S',
-            'style': '{',
-        },
-        'errorCritical': {
-            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
-            'datetime': '%d.%m.%Y - %H:%M:%S',
-            'style': '{',
-        },
-        'infoLog': {
-            'format': '{asctime} {levelname} {module} {message}',
-            'datetime': '%d.%m.%Y - %H:%M:%S',
-            'style': '{',
-        }
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console', 'warnings', 'errorCritical', 'infoLog'],
+#         },
+#         'django.request': {
+#             'handlers': ['errorsLog', 'mail_admins'],
+#         },
+#         'django.template': {
+#             'handlers': ['errorsLog'],
+#         },
+#         'django.server': {
+#             'handlers': ['errorsLog', 'mail_admins'],
+#         },
+#         'django.db.backends': {
+#             'handlers': ['errorsLog']
+#         },
+#         'django.security': {
+#             'handlers': ['securityLog']
+#         }
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'custom',
+#         },
+#         'warnings': {
+#             'level': 'WARNING',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'warning',
+#         },
+#         'errorCritical': {
+#             'level': 'ERROR',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'errorCritical',
+#         },
+#         'infoLog': {
+#             'level': 'INFO',
+#             'class': 'logging.FileHandler',
+#             'filename': 'general.log',
+#             'formatter': 'infoLog',
+#         },
+#         'errorsLog': {
+#             'level': 'ERROR',
+#             'class': 'logging.FileHandler',
+#             'filename': 'errors.log',
+#             'formatter': 'errorCritical',
+#         },
+#         'securityLog': {
+#             'class': 'logging.FileHandler',
+#             'filename': 'security.log',
+#             'formatter': 'infoLog',
+#         },
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'class': 'django.utils.log.AdminEmailHandler',
+#             'formatter': 'warning',
+#         }
+#     },
+#     'formatters': {
+#         'custom': {
+#             'format': '{asctime} {levelname} {message}',
+#             'datetime': '%d.%m.%Y - %H:%M:%S',
+#             'style': '{',
+#         },
+#         'warning': {
+#             'format': '{asctime} {levelname} {message} {pathname}',
+#             'datetime': '%d.%m.%Y - %H:%M:%S',
+#             'style': '{',
+#         },
+#         'errorCritical': {
+#             'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+#             'datetime': '%d.%m.%Y - %H:%M:%S',
+#             'style': '{',
+#         },
+#         'infoLog': {
+#             'format': '{asctime} {levelname} {module} {message}',
+#             'datetime': '%d.%m.%Y - %H:%M:%S',
+#             'style': '{',
+#         }
+#     }
+# }
