@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from .models import Category, Product
 
+from modeltranslation.admin import TranslationAdmin  # импортируем модель амдинки (вспоминаем модуль про переопределение стандартных админ-инструментов)
+
 
 # напишем уже знакомую нам функцию обнуления товара на складе
 def nullfy_quantity(modeladmin, request, queryset):
@@ -22,6 +24,14 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('price', 'quantity', 'name')  # добавляем примитивные фильтры в нашу админку
     search_fields = ('name', 'category__name')  # тут всё очень похоже на фильтры из запросов в базу
     actions = [nullfy_quantity]  # добавляем действия в список
+
+
+class CategoryAdmin(TranslationAdmin):
+    model = Category
+
+
+class MyModelAdmin(TranslationAdmin):
+    model = Product
 
 
 admin.site.register(Category)  # Не забываем зарегистрировать модели, иначе мы не увидим их в админке.
