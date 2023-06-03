@@ -1,23 +1,25 @@
-from datetime import datetime, timedelta
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache  # импортируем наш кэш
 from django.db.models import Exists, OuterRef
-from django.http import HttpResponse
+from django.http.response import HttpResponse
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
     CreateView, DeleteView, DetailView, ListView, UpdateView
 )
+import pytz #  импортируем стандартный модуль для работы с часовыми поясами
 
 from .filters import ProductFilter
 from .forms import ProductForm
 from .models import Category, Subscription
 from .models import Product
-from .tasks import hello, printer
+# from django.utils.translation import gettext as _ #  импортируем функцию для перевода
+from django.utils.translation import activate, get_supported_language_variant
 
 
 class ProductsList(ListView):
@@ -35,7 +37,7 @@ class ProductsList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'products'
     # 'products' должно строго соответствовать {{ products }} в products.html
-    paginate_by = 3  # вот так мы можем указать количество записей на странице
+    paginate_by = 10  # вот так мы можем указать количество записей на странице
 
     # Переопределяем функцию получения списка товаров
     def get_queryset(self):
@@ -65,7 +67,14 @@ class ProductsList(ListView):
         context['next_sale'] = "Распродажа в среду!"
         # Добавляем в контекст объект фильтрации.
         context['filterset'] = self.filterset
+        context['current_time'] = timezone.localtime(timezone.now())
+        context['timezones'] = pytz.common_timezones
         return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        # return redirect('/products/')
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 class ProductDetail(DetailView):
@@ -118,7 +127,14 @@ class ProductSearch(ListView):
         #     # К словарю добавим текущую дату в ключ 'time_now'.
         #     context['time_now'] = datetime.utcnow()
         context['filterset'] = self.filterset
+        context['current_time'] = timezone.localtime(timezone.now())
+        context['timezones'] = pytz.common_timezones
         return context
+
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        # return redirect('/products/')
+        return redirect(request.META.get('HTTP_REFERER'))
 
 # def create_product(request):
 #     form = ProductForm()
@@ -192,11 +208,21 @@ def subscriptions(request):
 
 class IndexView(View):
     def get(self, request):
+        current_time = timezone.now()
+
         # . Translators: This message appears on the home page only
         models = Product.objects.all()
 
         context = {
             'models': models,
+            'current_time': current_time,
+            'timezones': pytz.common_timezones,  # добавляем в контекст все доступные часовые пояса
         }
 
         return HttpResponse(render(request, 'default.html', context))
+
+    #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        # return redirect('/products/')
+        return redirect(request.META.get('HTTP_REFERER'))
