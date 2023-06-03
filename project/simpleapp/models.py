@@ -3,29 +3,39 @@ from django.core.cache import cache
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy   # импортируем «ленивый» геттекст с подсказкой
 
 
 class Product(models.Model):
     name = models.CharField(
         max_length=50,
         unique=True,  # названия товаров не должны повторяться
-        verbose_name='Название',
+        verbose_name=gettext_lazy('Product name'),
+        help_text=gettext_lazy('Enter a name of the product'),
     )
-    description = models.TextField(verbose_name='Описание')
+    description = models.TextField(
+        verbose_name=gettext_lazy('Description'),
+        help_text=gettext_lazy('Describe the product'),
+    )
     quantity = models.IntegerField(
-        validators=[MinValueValidator(0, 'Quantity should be >= 0')],
-        verbose_name='Количество',
+        validators=[MinValueValidator(0, gettext_lazy('Quantity should be >= 0'))],
+        verbose_name=gettext_lazy('Quantity'),
+        help_text=gettext_lazy('Quantity should be >= 0'),
     )
     # поле категории будет ссылаться на модель категории
     category = models.ForeignKey(
         to='Category',
         on_delete=models.CASCADE,
         related_name='products',  # все продукты в категории будут доступны через поле products
-        verbose_name='Категория'
+        verbose_name=gettext_lazy('Category'),
+        help_text=gettext_lazy('Choose a category name'),
     )
     price = models.FloatField(
-        validators=[MinValueValidator(0.0, 'Price should be >= 0.0')],
-        verbose_name='Цена',
+        validators=[MinValueValidator(0.0, gettext_lazy('Price should be >= 0.0'))],
+        # verbose_name='Цена',
+        verbose_name=gettext_lazy('Price'),
+        help_text=gettext_lazy('Price should be >= 0.0'),
     )
 
     # допишем свойство, которое будет отображать есть ли товар на складе
@@ -44,21 +54,27 @@ class Product(models.Model):
         cache.delete(f'product-{self.pk}')  # затем удаляем его из кэша, чтобы сбросить его
 
     class Meta:  # Возвращает название категории во множественном или единственном числе в админпанеле
-        verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        verbose_name = _('Product')
+        verbose_name_plural = _('Products')
 
 
 # Категория, к которой будет привязываться товар
 class Category(models.Model):
     # названия категорий тоже не должны повторяться
-    name = models.CharField(max_length=100, unique=True, verbose_name='Категория')
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        # verbose_name='Категория'
+        verbose_name=gettext_lazy('Category'),
+        help_text=gettext_lazy('Category name'),
+    )
 
     def __str__(self):
         return f'{self.name.title()}'
 
     class Meta:  # Возвращает название категории во множественном или единственном числе в админпанеле
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
 
 class Subscription(models.Model):
@@ -74,5 +90,5 @@ class Subscription(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        verbose_name = _('Subscription')
+        verbose_name_plural = _('Subscriptions')
