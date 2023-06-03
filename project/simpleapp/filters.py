@@ -1,5 +1,6 @@
 from django_filters import FilterSet, ModelChoiceFilter, CharFilter, NumberFilter
-from .models import Product, Category
+from .models import Category
+from django.utils.translation import gettext_lazy
 
 
 # Создаем свой набор фильтров для модели Product.
@@ -9,31 +10,31 @@ class ProductFilter(FilterSet):
     name = CharFilter(
         lookup_expr='icontains',
         field_name='name',
-        label='Название товара',
+        label=gettext_lazy('Product name'),
     )
 
     category = ModelChoiceFilter(
         field_name='category',
         queryset=Category.objects.all(),
-        label='Категория',
-        empty_label='Любая',
+        label=gettext_lazy('Category'),
+        empty_label=gettext_lazy('Any'),
     )
 
     price = NumberFilter(
         field_name='price',
-        label='Цена',
+        label=gettext_lazy('Price'),
     )
 
     price__gt = NumberFilter(
         field_name='price',
         lookup_expr='gt',
-        label='Цена выше чем',
+        label=gettext_lazy('Price bigger then'),
     )
 
     price__lt = NumberFilter(
         field_name='price',
         lookup_expr='lt',
-        label='Цена ниже чем',
+        label=gettext_lazy('Price lower then'),
     )
 
 
