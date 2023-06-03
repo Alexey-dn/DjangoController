@@ -10,12 +10,13 @@
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from .models import Product
 
 
 class ProductForm(forms.ModelForm):
-    description = forms.CharField(min_length=20)
+    # description = forms.CharField(min_length=20)
 
     class Meta:
         model = Product
@@ -34,7 +35,11 @@ class ProductForm(forms.ModelForm):
 
         if name == description:
             raise ValidationError(
-                "Описание не должно быть идентично названию."
+                _("Description cannot be identical to the product name")
+            )
+        if len(description) <= 20:
+            raise ValidationError(
+                _("Description length cannot be less 20 than characters")
             )
 
         return cleaned_data
