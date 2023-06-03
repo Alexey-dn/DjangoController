@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'simpleapp.middlewares.TimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -197,13 +198,13 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
 
 # Для кэширования
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
         # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
-    }
-}
+#     }
+# }
 
 # LOGGING = {
 #     'version': 1,
