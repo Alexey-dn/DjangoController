@@ -1,11 +1,12 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
 {% block title %}
-NewProduct
+{% trans 'NewProduct' %}
 {% endblock title %}
 
 {% block content %}
-<h1>Товар</h1>
+<h1>{% trans 'Product' %}</h1>
 <hr>
 <form action="" method="post">
     {% csrf_token %}

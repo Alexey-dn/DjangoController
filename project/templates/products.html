@@ -4,15 +4,16 @@
 {% load custom_filters %} <!-- Подключаем фильтр из custom_filters -->
 {% load custom_tags %} <!-- Подключаем таг из custom_tags -->
 {% load cache %} <!--Кэширование -->
+{% load i18n %}
 <!-- Название у нас будет products -->
 {% block title %}
-Products
+{% trans 'Products' %}
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
     {% cache 30 header %}
-    <h1>Все товары</h1>
+    <h1>{% trans 'All goods' %}</h1>
     <!-- Используем переданную из представления переменную time_now
     и применяем к ней фильтр date. По назначению этот фильтр очень похож
     на метод strftime у объекта datetime в Python — вывод времени
@@ -48,24 +49,24 @@ Products
     то выведется указанный в фильтре текст -->
     <hr>
     {% endcache %}
-    <a href="{% url 'subscriptions' %}">Подписаться</a>
+    <a href="{% url 'subscriptions' %}">{% trans 'Subscribe' %}</a>
     {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
     {% if perms.simpleapp.add_product %}
-    <a href="{% url 'product_create' %}">Добавить товар</a>
+    <a href="{% url 'product_create' %}">{% trans 'Add product' %}</a>
     {% endif %}
 
     {% if products %}
         <table> <!-- Начинаем описывать таблицу -->
             <tr> <!-- Добавляем строку -->
-                <td>Название</td> <!-- Добавляем ячейку в строку -->
-                <td>Описание</td>
-                <td>Категория</td>
-                <td>Цена</td>
-                <td>Количество</td>
+                <td>{% trans 'Products' %}</td> <!-- Добавляем ячейку в строку -->
+                <td>{% trans 'Description' %}</td>
+                <td>{% trans 'Category' %}</td>
+                <td>{% trans 'Price' %}</td>
+                <td>{% trans 'Quantity' %}</td>
 
                 {# Условие получается составным. #}
                 {% if perms.simpleapp.change_product or perms.simpleapp.delete_product %}
-                <td>Действия</td>
+                <td>{% trans 'Options' %}</td>
                 {% endif %}
             </tr> <!-- Не забываем закрыть HTML-тег строки -->
                 <!-- Для каждого товара будете генерироваться новая строчка,
@@ -89,10 +90,10 @@ Products
                     <td>
                         {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
                         {% if perms.simpleapp.change_product %}
-                        <a href="{% url 'product_update' pk=product.id %}">Изменить</a>
+                        <a href="{% url 'product_update' pk=product.id %}">{% trans 'Change' %}</a>
                         {% endif %}
                         {% if perms.simpleapp.delete_product %}
-                        <a href="{% url 'product_delete' product.id %}">Удалить</a>
+                        <a href="{% url 'product_delete' product.id %}">{% trans 'Delete' %}</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -100,7 +101,7 @@ Products
 
         </table>
     {% else %}
-        <h2>Товаров нет!</h2>
+        <h2>{% trans 'There are no any goods' %}</h2>
     {% endif %}
 
 {# Добавляем пагинацию на страницу #}

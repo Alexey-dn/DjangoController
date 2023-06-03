@@ -1,9 +1,10 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
 <!-- Название у нас будет Product -->
 {% block title %}
-Product
+{% trans 'Product' %}
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->

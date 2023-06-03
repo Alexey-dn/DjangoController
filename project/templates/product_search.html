@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
-
-    <title>Product search</title>
+<title>{% trans 'Product search' %}</title>
 
 {% block content %}
 <form action="" method="get">
@@ -14,10 +14,10 @@
 {% if search %}
         <table> <!-- Начинаем описывать таблицу -->
             <tr> <!-- Добавляем строку -->
-                <td>Название</td>
-                <td>Категория</td>
-                <td>Описание</td>
-                <td>Цена</td>
+                <td>{% trans 'Products' %}</td> <!-- Добавляем ячейку в строку -->
+                <td>{% trans 'Category' %}</td>
+                <td>{% trans 'Description' %}</td>
+                <td>{% trans 'Price' %}</td>
             </tr>
 
             {% for product in search %}
@@ -34,6 +34,6 @@
 
     {% else %}
 
-        <h2>Товаров не найдено!</h2>
+        <h2>{% trans 'No such product' %}</h2>
     {% endif %}
 {% endblock content %}
