@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 15:45+0300\n"
+"POT-Creation-Date: 2023-06-01 21:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,30 +16,133 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-#: .\simpleapp\views.py:27
-msgid "Hello world"
-msgstr "Привет мир"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\simpleapp\filters.py:13 .\simpleapp\models.py:14
+msgid "Product name"
+msgstr "Наименование товара"
+
+#: .\simpleapp\filters.py:19 .\simpleapp\models.py:31 .\simpleapp\models.py:68
+#: .\simpleapp\models.py:76 .\templates\product_search.html:18
+#: .\templates\products.html:63
+msgid "Category"
+msgstr "Категория"
+
+#: .\simpleapp\filters.py:20
+msgid "Any"
+msgstr "Любая из"
+
+#: .\simpleapp\filters.py:25 .\simpleapp\models.py:37
+#: .\templates\product_search.html:20 .\templates\products.html:64
+msgid "Price"
+msgstr "Цена"
+
+#: .\simpleapp\filters.py:31
+msgid "Price bigger then"
+msgstr "Цена больше чем:"
+
+#: .\simpleapp\filters.py:37
+msgid "Price lower then"
+msgstr "Цена меньше чем:"
+
+#: .\simpleapp\forms.py:38
+msgid "Description cannot be identical to the product name"
+msgstr "Описание не может быть идентично названию товара"
+
+#: .\simpleapp\forms.py:42
+msgid "Description length cannot be less 20 than characters"
+msgstr "Длина описания не может быть менее 20 символов"
+
+#: .\simpleapp\models.py:15
+msgid "Enter a name of the product"
+msgstr "Введите наименование товара"
+
+#: .\simpleapp\models.py:18 .\templates\product_search.html:19
+#: .\templates\products.html:62
+msgid "Description"
+msgstr "Описание"
+
+#: .\simpleapp\models.py:19
+msgid "Describe the product"
+msgstr "Опишите товар"
+
+#: .\simpleapp\models.py:22 .\simpleapp\models.py:24
+msgid "Quantity should be >= 0"
+msgstr "Количество должно быть >= 0"
+
+#: .\simpleapp\models.py:23 .\templates\products.html:65
+msgid "Quantity"
+msgstr "Количество"
+
+#: .\simpleapp\models.py:32
+msgid "Choose a category name"
+msgstr "Выберите категорию"
+
+#: .\simpleapp\models.py:35 .\simpleapp\models.py:38
+msgid "Price should be >= 0.0"
+msgstr "Цена должна быть >= 0.0"
+
+#: .\simpleapp\models.py:57 .\templates\product.html:7
+#: .\templates\product_edit.html:9
+msgid "Product"
+msgstr "Продукт"
+
+#: .\simpleapp\models.py:58 .\templates\product_search.html:17
+#: .\templates\products.html:10 .\templates\products.html:61
+msgid "Products"
+msgstr "Продукты"
+
+#: .\simpleapp\models.py:69
+msgid "Category name"
+msgstr "Название категории"
+
+#: .\simpleapp\models.py:77
+msgid "Categories"
+msgstr "Категории"
+
+#: .\simpleapp\models.py:93
+msgid "Subscription"
+msgstr "Подписка"
+
+#: .\simpleapp\models.py:94 .\templates\subscriptions.html:5
+msgid "Subscriptions"
+msgstr "Подписки"
+
+#: .\templates\403.html:7
+msgid "Error 403"
+msgstr "Ошибка 403"
+
+#: .\templates\403.html:10
+msgid "It seems you do not have access to this page "
+msgstr "Кажется у вас нет прав доступа к этой странице"
 
 #: .\templates\account\email\base_message.txt:1
 #, python-format
-msgid "Добро пожаловать на  %(site_name)s!"
-msgstr "We glad to see you on %(site_name)s!"
+msgid " We are glad to see you here on  %(site_name)s!"
+msgstr "Добро пожаловать на  %(site_name)s!"
 
 #: .\templates\account\email\base_message.txt:5
 #, python-format
 msgid ""
-"Спасибо, что пользуетесь %(site_name)s!\n"
+" Thank you for using %(site_name)s!\n"
 "%(site_domain)s"
 msgstr ""
-"Thank you for using %(site_name)s!\n"
+"Спасибо, что пользуетесь %(site_name)s!\n"
 "%(site_domain)s"
 
 #: .\templates\account\email\email_confirmation_message.txt:6
 #, python-format
 msgid ""
+"\n"
+"You received this message due to the user %(user_display)s put this email in "
+"registration form on %(site_domain)s.\n"
+"\n"
+"Follow the link to confirm your registration %(activate_url)s\n"
+"\n"
+"Have a good day!\n"
+msgstr ""
 "\n"
 "Вы получили это сообщение, потому что пользователь %(user_display)s указал "
 "этот email при регистрации на сайте %(site_domain)s.\n"
@@ -47,11 +150,60 @@ msgid ""
 "Для подтверждения регистрации пройдите по ссылке %(activate_url)s\n"
 "\n"
 "Хорошего дня!\n"
-msgstr ""
-"\n"
-"You received this message due to the user %(user_display)s put"
-"this email in registration form on %(site_domain)s.\n"
-"\n"
-"Follow the link %(activate_url)s\n"
-"\n"
-"Have a good day\n"
+
+#: .\templates\flatpages\default.html:106
+msgid "Sign out"
+msgstr "Выйти"
+
+#: .\templates\flatpages\default.html:108
+msgid "Sign in"
+msgstr "Войти"
+
+#: .\templates\product_delete.html:4 .\templates\product_delete.html:6
+msgid "Product deletion"
+msgstr "Удаление товара"
+
+#: .\templates\product_delete.html:10 .\templates\products.html:96
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\templates\product_edit.html:5
+msgid "NewProduct"
+msgstr "НовыйТовар"
+
+#: .\templates\product_search.html:4
+msgid "Product search"
+msgstr "Поиск товара"
+
+#: .\templates\product_search.html:37
+msgid "No such product"
+msgstr "Нет такого товара"
+
+#: .\templates\products.html:16
+msgid "All goods"
+msgstr "Все товары"
+
+#: .\templates\products.html:52 .\templates\subscriptions.html:17
+#: .\templates\subscriptions.html:20
+msgid "Subscribe"
+msgstr "Подписаться"
+
+#: .\templates\products.html:55
+msgid "Add product"
+msgstr "Добавить товар"
+
+#: .\templates\products.html:69
+msgid "Options"
+msgstr "Действия"
+
+#: .\templates\products.html:93
+msgid "Change"
+msgstr "Изменить"
+
+#: .\templates\products.html:104
+msgid "There are no any goods"
+msgstr "Не таких товаров"
+
+#: .\templates\subscriptions.html:18 .\templates\subscriptions.html:21
+msgid "Unsubscribe"
+msgstr "Отписаться"
