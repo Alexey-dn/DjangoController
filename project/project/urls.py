@@ -1,6 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import include, path
+from django.views.generic import TemplateView
+from rest_framework import routers
+from simpleapp import views
 
 """project URL Configuration
 
@@ -19,6 +21,12 @@ Including another URLconf
 """
 
 
+router = routers.DefaultRouter()
+router.register(r'products', views.ProductViewset)
+router.register(r'category', views.CategoryViewset)
+
+
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),  # подключаем встроенные эндопинты для работы с локализацией
     path('admin/', admin.site.urls),
@@ -28,4 +36,10 @@ urlpatterns = [
    # Делаем так, чтобы все адреса из нашего приложения (simpleapp/urls.py)
    # подключались к главному приложению с префиксом products/.
     path('products/', include('simpleapp.urls')),
+    path('swagger-ui/', TemplateView.as_view(
+        template_name='swagger-ui.html',
+        extra_context={'schema_url': 'openapi-schema'}
+    ), name='swagger-ui'),
+    # path('', include(router.urls)),
+    path('api/', include(router.urls), name='api'),
 ]
