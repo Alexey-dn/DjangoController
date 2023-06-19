@@ -12,12 +12,16 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
     CreateView, DeleteView, DetailView, ListView, UpdateView
 )
+import json
 import pytz #  импортируем стандартный модуль для работы с часовыми поясами
+from rest_framework import viewsets
+from rest_framework import permissions
 
 from .filters import ProductFilter
 from .forms import ProductForm
 from .models import Category, Subscription
 from .models import Product
+from .serializers import CategorySerializer, ProductSerializer
 # from django.utils.translation import gettext as _ #  импортируем функцию для перевода
 from django.utils.translation import activate, get_supported_language_variant
 
@@ -226,3 +230,48 @@ class IndexView(View):
         request.session['django_timezone'] = request.POST['timezone']
         # return redirect('/products/')
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+# ---------------API--------------------------
+class ProductViewset(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    # def get_product(_, pk):
+    #     product = Product.objects.get(pk=pk)
+    #     return HttpResponse(content=product, status=200)
+    # 
+    # def get_products(_):
+    #     products = Product.objects.all()
+    #     return HttpResponse(content=products, status=200)
+    # 
+    # def create_product(request):
+    #     body = json.loads(request.body.decode('utf-8'))
+    #     product = Product.objects.create(
+    #         name=body['name'],
+    #         description=body['description'],
+    #         quantity=body['quantity'],
+    #         category=body['category'],
+    #         price=body['price']
+    #     )
+    #     return HttpResponse(content=product, status=201)
+    # 
+    # def edit_product(request, pk):
+    #     body = json.loads(request.body.decode('utf-8'))
+    #     product = Product.objects.get(pk=pk)
+    #     for attr, value in body.items():
+    #         setattr(product, attr, value)
+    #     product.save()
+    #     return HttpResponse(content=product, status=200)
+    # 
+    # def delete_product(_, pk):
+    #     Product.objects.get(pk=pk).delete()
+    #     return HttpResponse(status=204)
+
+
+class CategoryViewset(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
